@@ -22,7 +22,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
 
   get("/items") {
-    val items = CartRepository.items
+    val items = CartRepository.all
 
     jade("items", "items" -> items)
   }

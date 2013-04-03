@@ -4,15 +4,13 @@ import org.scalatra.auth._
 import org.scalatra.auth.strategy._
 import org.scalatra.ScalatraBase
 import com.softserve.cart.model._
+import com.softserve.cart.repository._
 
 class MyBasicAuthStrategy(protected override val app: ScalatraBase, realm: String)
   extends BasicAuthStrategy[User](app, realm) {
 
     protected def validate(userName: String, password: String): Option[User] = {
-      if(userName == "cart" && password == "cart")
-        Some(User(1, userName, password))
-      else
-        None
+      UserRepository.login(userName, password)
     }
 
     protected def getUserId(user: User) = user.id.toString
@@ -22,7 +20,7 @@ trait AuthenticationSupport extends ScentrySupport[User] with BasicAuthSupport[U
   self: ScalatraBase =>
   val realm = "Cart realm"
 
-  protected def fromSession = { case id: String => User(1, id, id) }
+  protected def fromSession = { case id: String => UserRepository.lookup(id.toLong).orNull }
   protected def toSession = { case u: User => u.id.toString }
   protected val scentryConfig = (new ScentryConfig{}).asInstanceOf[ScentryConfiguration]
   override protected def configureScentry = {

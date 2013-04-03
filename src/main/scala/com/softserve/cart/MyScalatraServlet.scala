@@ -2,7 +2,7 @@ package com.softserve.cart
 
 import org.scalatra._
 import scalate.ScalateSupport
-import com.softserve.cart.repository.CardRepository
+import com.softserve.cart.repository.CartRepository
 
 class MyScalatraServlet extends ScalatraShoppingCartStack {
   before(true) {
@@ -14,7 +14,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
 
   get("/shopping-cart") {
-    val hello = CardRepository.hello
+    val items = CartRepository.allItems
 
     jade("/hello-scalate")
   }

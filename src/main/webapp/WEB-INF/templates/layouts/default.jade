@@ -6,12 +6,18 @@
 html
   head
     title= title
-    link{ :href => "css/bootstrap.css", :rel => "stylesheet",  
-          :media => "screen" }
+    link(href="css/bootstrap.css" rel="stylesheet"  media="screen")
+    link(href="css/app.css" rel="stylesheet" media="screen")
   body
-    #content
+    .navbar.navbar-fixed-top.navbar-inverse
+      .navbar-inner
+        a(href="/" class="brand") Home
+        ul.nav
+          li
+            a(href="shopping-cart") Shopping cart
+    .container
       h1= headline
       != body
-      script{ :type => "text/javascript", 
-              :src => "http://code.jquery.com/jquery.js"}
-      script{ :type => "text/javascript", :src => "js/bootstrap.js"}
+      script(type="text/javascript"
+             src="http://code.jquery.com/jquery.js")
+      script(type="text/javascript" src="js/bootstrap.js")

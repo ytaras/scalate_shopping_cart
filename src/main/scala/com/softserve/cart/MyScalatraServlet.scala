@@ -9,6 +9,10 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     contentType="text/html"
   }
 
+  before("/*") {
+    basicAuth
+  }
+
   get("/") {
     jade("/index")
   }

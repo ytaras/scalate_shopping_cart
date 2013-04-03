@@ -6,8 +6,9 @@ import org.fusesource.scalate.{ TemplateEngine, Binding }
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import javax.servlet.http.HttpServletRequest
 import collection.mutable
+import infrastructure._
 
-trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport {
+trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport with AuthenticationSupport {
 
   /* wire up the precompiled templates */
   override protected def defaultTemplatePath: List[String] = List("/WEB-INF/templates/views")

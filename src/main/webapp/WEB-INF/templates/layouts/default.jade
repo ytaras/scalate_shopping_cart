@@ -6,7 +6,12 @@
 html
   head
     title= title
+    link{ :href => "css/bootstrap.css", :rel => "stylesheet",  
+          :media => "screen" }
   body
     #content
       h1= headline
       != body
+      script{ :type => "text/javascript", 
+              :src => "http://code.jquery.com/jquery.js"}
+      script{ :type => "text/javascript", :src => "js/bootstrap.js"}

@@ -2,7 +2,7 @@ package com.softserve.cart
 
 import org.scalatra._
 import scalate.ScalateSupport
-import com.softserve.cart.repository.CartRepository
+import com.softserve.cart.model.CartRepository
 
 class MyScalatraServlet extends ScalatraShoppingCartStack {
   before(true) {

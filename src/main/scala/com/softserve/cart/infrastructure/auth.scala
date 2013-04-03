@@ -4,16 +4,17 @@ import org.scalatra.auth._
 import org.scalatra.auth.strategy._
 import org.scalatra.ScalatraBase
 import com.softserve.cart.model._
-import com.softserve.cart.repository._
+import org.slf4j.LoggerFactory
 
 class MyBasicAuthStrategy(protected override val app: ScalatraBase, realm: String)
   extends BasicAuthStrategy[User](app, realm) {
 
-    protected def validate(userName: String, password: String): Option[User] = {
-      UserRepository.login(userName, password)
-    }
+  val logger = LoggerFactory.getLogger(getClass)
+  protected def validate(userName: String, password: String): Option[User] = {
+    UserRepository.login(userName, password)
+  }
 
-    protected def getUserId(user: User) = user.id.toString
+  protected def getUserId(user: User) = user.id.toString
 }
 
 trait AuthenticationSupport extends ScentrySupport[User] with BasicAuthSupport[User] {

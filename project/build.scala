@@ -22,6 +22,8 @@ object ScalatraShoppingCartBuild extends Build {
       scalaVersion := ScalaVersion,
       resolvers += Classpaths.typesafeReleases,
       libraryDependencies ++= Seq(
+        "org.squeryl" %% "squeryl" % "0.9.5-6",
+        "com.h2database" % "h2" % "1.2.127",
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",

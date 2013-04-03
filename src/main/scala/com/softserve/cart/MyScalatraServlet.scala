@@ -14,9 +14,13 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
 
   get("/shopping-cart") {
-    val items = CartRepository.allItems
+    jade("/shopping-cart")
+  }
 
-    jade("/hello-scalate")
+  get("/items") {
+    val items = CartRepository.items
+
+    jade("items", "items" -> items)
   }
 
 }

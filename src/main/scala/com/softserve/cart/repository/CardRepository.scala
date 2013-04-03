@@ -16,11 +16,11 @@ object CartRepository {
 
   def importDefaultDataset = transaction {
     create
-    items.insert(Item(1, "item1", "description1", 10))
+    Db.items.insert(Item(1, "item1", "description1", 10))
   }
 
-  def allItems = transaction {
-    from(items) (select(_))
+  def items = transaction {
+    from(Db.items)(select(_)).toIndexedSeq
   }
 }
 

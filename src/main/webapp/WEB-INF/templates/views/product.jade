@@ -6,3 +6,10 @@ h3 Description
 = product.description
 h3 Price
 \$#{product.price}
+hr
+form(method="Post" action="/shopping-cart" class="form-inline")
+  fieldset
+    label Amount
+    input(type="text" class="input-mini")
+    button(type="submit" class="btn btn-primary") Add to shoping cart
+

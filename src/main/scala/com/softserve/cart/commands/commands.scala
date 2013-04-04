@@ -9,10 +9,13 @@ class AddToCartCommand extends CartCommands[CartItem] {
   val itemId: Field[Long] = asType[Long]("productId").required.greaterThan(0)
 }
 
-class RemoveFromCartCommand extends CartCommands[Unit] {
+class RemoveFromCartCommand extends CartCommands[Int] {
   val productId: Field[Long] = asType[Long]("productId").required.greaterThan(0)
-
 }
+
+class CheckoutCommand extends CartCommands[Int] {
+}
+
 abstract class CartCommands[S](implicit mf: Manifest[S]) extends ModelCommand[S] with ParamsOnlyCommand {
   // TODO Figure out how to pass it other way
   var user: User = _

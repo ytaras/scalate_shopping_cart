@@ -37,8 +37,14 @@ object UserRepository extends Repository[User] with CommandHandler {
     case c: RemoveFromCartCommand => transaction {
       allCatch.withApply(errorFail) {
         val productId = c.productId.value.get
-        Db.cartItems.deleteWhere(s => s.productId === productId and s.userId === c.user.id)
-        ().successNel : ModelValidation[Unit]
+        Db.cartItems.deleteWhere(s => s.productId === productId and s.userId === c.user.id).
+          successNel : ModelValidation[Int]
+      }
+    }
+    case c: CheckoutCommand => transaction {
+      allCatch.withApply(errorFail) {
+        Db.cartItems.deleteWhere(_.userId === c.user.id).
+          successNel : ModelValidation[Int]
       }
     }
   }

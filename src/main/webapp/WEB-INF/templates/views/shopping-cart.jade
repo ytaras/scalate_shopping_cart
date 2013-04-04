@@ -20,3 +20,6 @@ table.table
         td= "$" + item.price
         td= cartItem.count
         td= "$" + cartItem.sum(item)
+
+form(action="/shopping-cart/checkout" method="POST")
+  button(type="submit" class="btn btn-primary") Checkout cart

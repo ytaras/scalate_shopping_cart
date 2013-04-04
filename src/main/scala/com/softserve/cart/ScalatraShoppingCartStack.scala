@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest
 import collection.mutable
 import infrastructure._
 
-trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport with AuthenticationSupport with ParamsOnlyCommandSupport {
+trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport with AuthenticationSupport 
+  with ParamsOnlyCommandSupport with FlashMapSupport {
 
   /* wire up the precompiled templates */
   override protected def defaultTemplatePath: List[String] = List("/WEB-INF/templates/views")

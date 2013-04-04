@@ -21,6 +21,11 @@ html
             li
               a(href="/logout") Logout
       h1= title
+      - context.asInstanceOf[org.scalatra.scalate.ScalatraRenderContext].flash.get("alert").foreach
+        - alert =>
+        .alert
+          .button(type="button" class="close" data-dismiss="alert") &times;
+          = alert
       != body
       script(type="text/javascript"
              src="http://code.jquery.com/jquery.js")

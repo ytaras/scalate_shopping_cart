@@ -38,7 +38,10 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     cmd.user = user
     UserRepository.execute(cmd).fold(
       errors => halt(400, errors),
-      cart => redirect("/shopping-cart")
+      cart => {
+        flash("alert") = "Item added"
+        redirect("/shopping-cart")
+      }
     )
   }
   post("/shopping-cart/checkout") {
@@ -46,7 +49,10 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     cmd.user = user
     UserRepository.execute(cmd).fold(
       errors => halt(400, errors),
-      cart => redirect("/shopping-cart")
+      cart => {
+        flash("alert") = "Cart checked out"
+        redirect("/shopping-cart")
+      }
     )
   }
   delete("/cartitems/:productId") {
@@ -54,7 +60,10 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     cmd.user = user
     UserRepository.execute(cmd).fold(
       errors => halt(400, errors),
-      _ => Ok("Ok")
+      _ => {
+        flash("alert") = "Cart item removed"
+        Ok("Ok")
+      }
     )
   }
 

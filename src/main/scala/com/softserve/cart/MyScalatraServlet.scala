@@ -41,5 +41,13 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
       cart => redirect("/shopping-cart")
     )
   }
+  delete("/cartitems/:productId") {
+    val cmd = command[RemoveFromCartCommand]
+    cmd.user = user
+    UserRepository.execute(cmd).fold(
+      errors => halt(400, errors),
+      _ => Ok("Ok")
+    )
+  }
 
 }

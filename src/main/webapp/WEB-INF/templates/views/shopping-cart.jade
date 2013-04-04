@@ -15,7 +15,7 @@ table.table
     - for((item, cartItem) <- cart)
       tr
         td
-          a(href="/cartitems/#{cartItem.stringId}" class="btn btn-danger delete-cart-item") Remove from cart
+          a(href="/cartitems/#{cartItem.productId}" class="btn btn-danger delete-cart-item") Remove from cart
         td= item.name
         td= "$" + item.price
         td= cartItem.count

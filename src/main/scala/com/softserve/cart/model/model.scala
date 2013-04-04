@@ -16,7 +16,6 @@ case class User(id: Long, name: String, password: String)
 case class CartItem(productId: Long, userId: Long, count: Int)
   extends KeyedEntity[CompositeKey2[Long, Long]] {
   def id = compositeKey(productId, userId)
-  def stringId = productId + "_" + userId
 
   // TODO Find out what is correct pattern for using transactions and lazy load in Squeryl
   // so I won't have to pass item as a parameter

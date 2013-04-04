@@ -34,6 +34,13 @@ object UserRepository extends Repository[User] with CommandHandler {
         add(c.user, product, c.amount.value.get)
       }
     }
+    case c: RemoveFromCartCommand => transaction {
+      allCatch.withApply(errorFail) {
+        val productId = c.productId.value.get
+        Db.cartItems.deleteWhere(s => s.productId === productId and s.userId === c.user.id)
+        ().successNel : ModelValidation[Unit]
+      }
+    }
   }
   private def add(u: User, p: Product, count: Int): ModelValidation[CartItem] = {
       val ci = u.cart.associations.where(_.productId === p.id).headOption match {

@@ -5,8 +5,9 @@ $(document).ready(function() {
     $.ajax({
       url: href,
       method: 'delete',
-    }).done(function(){
-      location.reload();
+      success: function(response) {
+        location.reload();
+      }
     });
   });
 });

@@ -9,14 +9,16 @@ object CartRepository extends Repository[Item] {
 
 object UserRepository extends Repository[User] {
   import org.squeryl.PrimitiveTypeMode._
-  def relation = Db.users
+  lazy val relation = Db.users
 
   def login(userName: String, password: String) = inTransaction {
-    from(relation)(s => where(s.name === userName and s.password === password) select(s)).headOption
+    from(relation)(s => where(s.name === userName and s.password === password)
+      select(s)).headOption
   }
 
-  def cartItems(userId: Long) = inTransaction {
-    from(Db.cartItems, Db.items)((ci, i) => where(ci.userId === userId and ci.itemId === i.id) select((ci, i)))
+  def cart(user: User) = inTransaction {
+    user.cart.toList
   }
+
 }
 

@@ -39,12 +39,6 @@ object Db extends Schema {
   import com.softserve.cart.model._
   val items = table[Item]
   val users = table[User]
-  val cartItems = table[CartItem]
-
-  def importDefaultDataset = transaction {
-    create
-    items.insert(Item(1, "item1", "description1", 10))
-    users.insert(User(1, "cart", "cart"))
-    cartItems.insert(CartItem(1, 1, 1, 5))
-  }
+  val cartItems = manyToManyRelation(items, users).
+    via[CartItem]((i, u, ci) => (i.id === ci.itemId, u.id === ci.userId))
 }

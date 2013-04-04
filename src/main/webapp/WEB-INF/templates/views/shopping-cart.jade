@@ -1,0 +1,22 @@
+- attributes("title") = "Shopping cart"
+-import com.softserve.cart.model._
+-@ val cart: Iterable[(Item, CartItem)]
+
+
+table.table
+  thead
+    tr
+      th Id
+      th Name
+      th Price
+      th Count
+      th Sum
+  tbody
+    - for((item, cartItem) <- cart)
+      tr
+        td
+          a(href={"/cartitems/" + cartItem.stringId})= cartItem.stringId
+        td= item.name
+        td= "$" + item.price
+        td= cartItem.count
+        td= "$" + cartItem.sum(item)

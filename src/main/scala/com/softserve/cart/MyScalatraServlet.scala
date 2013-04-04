@@ -3,6 +3,7 @@ package com.softserve.cart
 import org.scalatra._
 import scalate.ScalateSupport
 import com.softserve.cart.model.CartRepository
+import com.softserve.cart.model.UserRepository
 
 class MyScalatraServlet extends ScalatraShoppingCartStack {
   before(true) {
@@ -18,13 +19,11 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
 
   get("/shopping-cart") {
-    jade("/shopping-cart")
+    jade("/shopping-cart", "cart" -> UserRepository.cart(user))
   }
 
   get("/items") {
-    val items = CartRepository.all
-
-    jade("items", "items" -> items)
+    jade("items", "items" -> CartRepository.all)
   }
 
 }

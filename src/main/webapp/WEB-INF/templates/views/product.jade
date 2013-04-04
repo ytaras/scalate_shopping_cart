@@ -10,6 +10,7 @@ hr
 form(method="Post" action="/shopping-cart" class="form-inline")
   fieldset
     label Amount
-    input(type="text" class="input-mini")
+    input(type="text" name="amount" class="input-mini")
+    input(type="hidden" name="productId" value="#{product.id}")
     button(type="submit" class="btn btn-primary") Add to shoping cart
 

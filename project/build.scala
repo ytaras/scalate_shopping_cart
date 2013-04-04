@@ -28,6 +28,7 @@ object ScalatraShoppingCartBuild extends Build {
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-auth" % ScalatraVersion,
+        "org.scalatra" %% "scalatra-commands" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
         "c3p0" % "c3p0" % "0.9.1.2",
         "ch.qos.logback" % "logback-classic" % "1.0.9" % "runtime",

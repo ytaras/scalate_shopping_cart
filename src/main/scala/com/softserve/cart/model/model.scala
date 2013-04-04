@@ -11,7 +11,7 @@ case class Product(id: Long, name: String, description: String, price: Int)
 // TODO Storing passwords in plain text is insecure, still this is a PoC only
 case class User(id: Long, name: String, password: String)
   extends KeyedEntity[Long] {
-  lazy val cart: Query[(Product, CartItem)] = Db.cartItems.right(this).associationMap
+  lazy val cart = Db.cartItems.right(this)
 }
 case class CartItem(productId: Long, userId: Long, count: Int)
   extends KeyedEntity[CompositeKey2[Long, Long]] {

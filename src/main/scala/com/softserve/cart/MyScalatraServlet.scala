@@ -2,8 +2,7 @@ package com.softserve.cart
 
 import org.scalatra._
 import scalate.ScalateSupport
-import com.softserve.cart.model.CartRepository
-import com.softserve.cart.model.UserRepository
+import com.softserve.cart.model._
 
 class MyScalatraServlet extends ScalatraShoppingCartStack {
   before(true) {
@@ -22,8 +21,15 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     jade("/shopping-cart", "cart" -> UserRepository.cart(user))
   }
 
-  get("/items") {
-    jade("items", "items" -> CartRepository.all)
+  get("/products") {
+    jade("products", "products" -> ProductRepository.all)
+  }
+
+  get("/products/:id") {
+    ProductRepository.lookup(params("id").toLong) match {
+      case Some(product) => jade("/product", "product" -> product)
+      case None => NotFound
+    }
   }
 
 }

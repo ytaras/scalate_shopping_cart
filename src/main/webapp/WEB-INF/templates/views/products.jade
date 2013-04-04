@@ -1,0 +1,17 @@
+- attributes("title") = "Products list"
+-import com.softserve.cart.model._
+-@ val products: Iterable[Product]
+
+table.table
+  thead
+    tr
+      th Id
+      th Name
+      th Price
+  tbody
+    - for(product <- products)
+      tr
+        td
+          a(href={"/products/" + product.id})= product.id
+        td= product.name
+        td= "$" + product.price

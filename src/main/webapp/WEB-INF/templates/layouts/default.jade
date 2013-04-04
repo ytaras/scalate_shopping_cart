@@ -6,16 +6,20 @@
 html
   head
     title= "Scalatra: " + title
-    link(href="css/bootstrap.css" rel="stylesheet"  media="screen")
-    link(href="css/app.css" rel="stylesheet" media="screen")
+    link(href="/css/bootstrap.css" rel="stylesheet"  media="screen")
+    link(href="/css/app.css" rel="stylesheet" media="screen")
   body
-    .navbar.navbar-fixed-top.navbar-inverse
-      .navbar-inner
-        a(href="/" class="brand") Home
-        ul.nav
-          li
-            a(href="shopping-cart") Shopping cart
     .container
+      .navbar.navbar-fixed-top.navbar-inverse
+        .navbar-inner
+          a(href="/" class="brand") Home
+          ul.nav
+            li
+              a(href="/products") Available products
+            li
+              a(href="/shopping-cart") Shopping cart
+            li
+              a(href="/logout") Logout
       h1= title
       != body
       script(type="text/javascript"

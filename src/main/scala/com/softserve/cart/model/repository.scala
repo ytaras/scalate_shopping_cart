@@ -3,8 +3,8 @@ package com.softserve.cart.model
 import com.softserve.cart.model._
 import com.softserve.cart.infrastructure.{Db, Repository}
 
-object CartRepository extends Repository[Item] {
-  def relation = Db.items
+object ProductRepository extends Repository[Product] {
+  def relation = Db.products
 }
 
 object UserRepository extends Repository[User] {

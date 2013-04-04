@@ -9,7 +9,7 @@ object Init extends App with DbInit {
   connection.bindToCurrentThread
   Db.create
 
-  Db.items.insert(Item(1, "item1", "description1", 10))
+  Db.products.insert(Product(1, "item1", "description1", 10))
   Db.users.insert(User(1, "cart", "cart"))
   Db.cartItems.insert(CartItem(1, 1, 5))
 }

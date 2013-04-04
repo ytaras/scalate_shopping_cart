@@ -28,7 +28,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   get("/products/:id") {
     ProductRepository.lookup(params("id").toLong) match {
       case Some(product) => jade("/product", "product" -> product)
-      case None => NotFound
+      case None => NotFound("Item with id " + params("id") + " not found")
     }
   }
 

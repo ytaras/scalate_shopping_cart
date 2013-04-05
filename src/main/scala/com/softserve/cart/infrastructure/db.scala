@@ -6,11 +6,13 @@ import org.squeryl.adapters.H2Adapter
 import org.scalatra.ScalatraBase
 
 trait DbInit {
-  val connectionString = "jdbc:h2:./test"
+  val connectionString = "jdbc:mysql://localhost/shopping_cart"
 
   var cpds = new ComboPooledDataSource
   def configureDb {
-    cpds.setDriverClass("org.h2.Driver")
+    cpds.setDriverClass("com.mysql.jdbc.Driver")
+    cpds.setUser("cart")
+    cpds.setPassword("cart")
     cpds.setJdbcUrl(connectionString)
     cpds.setMinPoolSize(1)
     cpds.setMaxPoolSize(10)

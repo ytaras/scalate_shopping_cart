@@ -7,4 +7,4 @@ Are you sure you want to checkout products at sum $#{sum}?
 form(action="/shopping-cart/checkout" method="POST")
   input(type="hidden" name="cartId" value="#{cartId}")
   button(type="submit" class="btn btn-primary") Checkout cart
-  a(href="/shopping-cart/checkout" type="submit" class="btn btn-danger") Cancel
+  a(href="/shopping-cart" type="submit" class="btn btn-danger") Cancel

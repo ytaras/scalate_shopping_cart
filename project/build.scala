@@ -24,7 +24,7 @@ object ScalatraShoppingCartBuild extends Build {
       resolvers += Classpaths.typesafeReleases,
       libraryDependencies ++= Seq(
         "org.squeryl" %% "squeryl" % "0.9.5-6",
-        "com.h2database" % "h2" % "1.2.127",
+        "mysql" % "mysql-connector-java" % "5.1.10",
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-auth" % ScalatraVersion,

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Ubix.io: Set One, task 1 </title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  
+  <!-- include d3.js -->
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+
+  <!-- include plot builder -->
+  <script src="plot.builder.js"></script>
+
+
+</head>
+<body>
+<div class="content">
+<h1> US 2012 elections data </h1>
+<form class='form'>
+  <input type="radio" name="graph" id="graph1" value='1'><label for="graph1"><span></span> votes percentage by state</label>
+  <input type="radio" name="graph" id="graph2" value='2'><label for="graph2"><span></span> votes percentage by demographics</label>
+  <input type="radio" name="graph" id="graph3" value='3'><label for="graph3"><span></span> margins of Obama and Romney by geography</label>
+</form>
+<div class='plot_wraper'></div>
+</div>
+</body>
+</html>

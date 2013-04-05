@@ -1,0 +1,102 @@
+body {
+  font-size: 12px;
+}
+
+.content {
+  width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+input[type="radio"] {
+    display:none;
+}
+
+input[type="radio"] + label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 5px;
+
+}
+
+input[type="radio"] + label span {
+  background:url(checkbox_sprite.png) left top no-repeat;
+  cursor:pointer;
+  display:inline-block;
+  height:40px;
+  margin:-1px 4px 0 0;
+  vertical-align:middle;
+  width:40px;
+}
+
+input[type="radio"]:checked + label span {
+    background:url(checkbox_sprite.png) -40px top no-repeat;
+}
+
+/*wraper size*/
+.plot_wraper {width: 965px; height: 450px;}
+
+/* plot colors */
+.axis path,
+
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.color1 {
+  fill: #C0504D; /*red*/
+}
+
+.color2 {
+  fill: #9BBB59; /*green*/
+}
+
+.color3 {
+  fill: #4F81BD; /*blue*/
+}
+
+.x.axis path {
+  display: none;
+}
+
+@media only screen and (max-width : 768px) 
+{
+  body{ 
+    font-size: 10px;
+  }
+
+  .content {
+    width: 760px;
+  }
+
+  h1 {
+    font-size: 14px;
+  }
+
+  input[type="radio"] + label {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
+  .plot_wraper {
+    width: 750px;
+    height: 350px;
+  }
+}
+
+/* iPads (portrait) ----------- 
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+/*and (orientation : portrait) {
+  .plot_wraper {width: 760px; height: 450px;}
+}*/

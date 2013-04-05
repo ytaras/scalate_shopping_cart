@@ -21,7 +21,5 @@ table.table
         td= cartItem.count
         td= "$" + cartItem.sum
 
-form(action="/shopping-cart/checkout" method="POST")
-  input(type="hidden" name="cartId" value="#{cartId}")
-  button(type="submit" class="btn btn-primary") Checkout cart
+a(href="/shopping-cart/checkout" type="submit" class="btn btn-primary") Checkout cart
 

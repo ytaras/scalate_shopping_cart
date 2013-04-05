@@ -24,13 +24,17 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
   def cart(cartId: String) = inTransaction {
     from(relation)(s => where(s.cartId === cartId) select(s)).toList
   }
+  def sum(cartId: String): Int = inTransaction {
+    // In real world I would do it in DB, but doing it in Scala is much more fun
+    cart(cartId).map(_.sum).foldLeft(0)(_ + _)
+  }
   def newId = java.util.UUID.randomUUID.toString
 
   protected def handle: Handler = {
     case c: AddToCartCommand => transaction {
       allCatch.withApply(errorFail) {
         // TODO I beliebe some more functional apporoach exists
-        // - to transform from Option to NEL
+        // to transform from Option to NEL
         val product = ProductRepository.lookup(c.itemId.value.get).get
         add(c.cartId.value.get, product, c.amount.value.get)
       }

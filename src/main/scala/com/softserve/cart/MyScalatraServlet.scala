@@ -43,15 +43,19 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
       }
     )
   }
+
+  get("/shopping-cart/checkout") {
+    jade("/checkout-confirm", "sum" -> CartRepository.sum(cartId), "cartId" -> cartId)
+  }
   post("/shopping-cart/checkout") {
     val cmd = command[CheckoutCommand]
     CartRepository.execute(cmd).fold(
       errors => halt(400, errors),
       cart => {
         flash("alert") = "Cart checked out"
-        redirect("/shopping-cart")
-      }
-    )
+          redirect("/shopping-cart")
+        }
+      )
   }
   delete("/cartitems/:productId") {
     val cmd = command[RemoveFromCartCommand]
@@ -63,7 +67,5 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
       }
     )
   }
-
-  def generateCookie = java.util.UUID.randomUUID.toString
 
 }

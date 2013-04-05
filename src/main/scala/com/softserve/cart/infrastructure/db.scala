@@ -27,12 +27,12 @@ trait DbInit {
   }
 }
 
-trait Repository[Entity <: KeyedEntity[Long]] {
+trait Repository[T, Entity <: KeyedEntity[T]] {
   def relation: Table[Entity]
   def all = inTransaction {
     from(relation)(select(_)).toIndexedSeq
   }
-  def lookup(key: Long) = inTransaction {
+  def lookup(key: T) = inTransaction {
     relation.lookup(key)
   }
 }
@@ -40,7 +40,5 @@ trait Repository[Entity <: KeyedEntity[Long]] {
 object Db extends Schema {
   import com.softserve.cart.model._
   val products = table[Product]
-  val users = table[User]
-  val cartItems = manyToManyRelation(products, users).
-    via[CartItem]((i, u, ci) => (i.id === ci.productId, u.id === ci.userId))
+  val cartItems = table[CartItem]
 }

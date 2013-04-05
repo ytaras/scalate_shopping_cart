@@ -9,10 +9,8 @@ import com.softserve.cart.commands._
 class MyScalatraServlet extends ScalatraShoppingCartStack {
   before(true) {
     contentType="text/html"
-  }
-
-  before("/*") {
-    basicAuth
+    if(cookies.get("shoppingcart_id").isEmpty)
+      cookies += ("shoppingcart_id" -> CartRepository.newId)
   }
 
   get("/") {
@@ -20,7 +18,8 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
 
   get("/shopping-cart") {
-    jade("/shopping-cart", "cart" -> UserRepository.cart(user))
+    val cart = cookies.get("shoppingcart_id").map { CartRepository.cart(_) } getOrElse Nil
+    jade("/shopping-cart", "cart" -> cart, "cookie" -> cookies("shoppingcart_id"))
   }
 
   get("/products") {
@@ -35,8 +34,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
   post("/shopping-cart") {
     val cmd = command[AddToCartCommand]
-    cmd.user = user
-    UserRepository.execute(cmd).fold(
+    CartRepository.execute(cmd).fold(
       errors => halt(400, errors),
       cart => {
         flash("alert") = "Item added"
@@ -46,8 +44,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
   post("/shopping-cart/checkout") {
     val cmd = command[CheckoutCommand]
-    cmd.user = user
-    UserRepository.execute(cmd).fold(
+    CartRepository.execute(cmd).fold(
       errors => halt(400, errors),
       cart => {
         flash("alert") = "Cart checked out"
@@ -57,8 +54,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
   }
   delete("/cartitems/:productId") {
     val cmd = command[RemoveFromCartCommand]
-    cmd.user = user
-    UserRepository.execute(cmd).fold(
+    CartRepository.execute(cmd).fold(
       errors => halt(400, errors),
       _ => {
         flash("alert") = "Cart item removed"
@@ -66,5 +62,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
       }
     )
   }
+
+  def generateCookie = java.util.UUID.randomUUID.toString
 
 }

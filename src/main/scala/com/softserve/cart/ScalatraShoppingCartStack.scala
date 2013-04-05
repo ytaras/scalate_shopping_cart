@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 import collection.mutable
 import infrastructure._
 
-trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport with AuthenticationSupport 
+trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport
   with ParamsOnlyCommandSupport with FlashMapSupport {
 
   /* wire up the precompiled templates */

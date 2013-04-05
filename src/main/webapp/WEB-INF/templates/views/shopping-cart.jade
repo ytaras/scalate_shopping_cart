@@ -1,7 +1,7 @@
 - attributes("title") = "Shopping cart"
 -import com.softserve.cart.model._
 -@ val cart: Iterable[(Product, CartItem)]
-
+-@ val aCookie: String
 
 table.table
   thead
@@ -23,3 +23,5 @@ table.table
 
 form(action="/shopping-cart/checkout" method="POST")
   button(type="submit" class="btn btn-primary") Checkout cart
+
+= aCookie

@@ -17,7 +17,6 @@ class CheckoutCommand extends CartCommands[Int] {
 }
 
 abstract class CartCommands[S](implicit mf: Manifest[S]) extends ModelCommand[S] with ParamsOnlyCommand {
-  // TODO Figure out how to pass it other way
-  var user: User = _
+  val cartId: Field[String] = asType[String]("cartId").required
 }
 

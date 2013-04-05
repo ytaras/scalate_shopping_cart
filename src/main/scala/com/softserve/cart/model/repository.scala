@@ -21,38 +21,31 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
   import org.squeryl.PrimitiveTypeMode._
   lazy val relation = Db.cartItems
 
-  def cart(cartId: String) = inTransaction {
-    from(relation)(s => where(s.cartId === cartId) select(s)).toList
-  }
-  def sum(cartId: String): Int = inTransaction {
+  def cart(cartId: String) = from(relation)(s => where(s.cartId === cartId) select(s))
+
+  def sum(cartId: String): Int =
     // In real world I would do it in DB, but doing it in Scala is much more fun
     cart(cartId).map(_.sum).foldLeft(0)(_ + _)
-  }
+
   def newId = java.util.UUID.randomUUID.toString
 
   protected def handle: Handler = {
-    case c: AddToCartCommand => transaction {
-      allCatch.withApply(errorFail) {
+    case c: AddToCartCommand => allCatch.withApply(errorFail) {
         // TODO I beliebe some more functional apporoach exists
         // to transform from Option to NEL
         val product = ProductRepository.lookup(c.itemId.value.get).get
         add(c.cartId.value.get, product, c.amount.value.get)
-      }
     }
-    case c: RemoveFromCartCommand => transaction {
-      allCatch.withApply(errorFail) {
+    case c: RemoveFromCartCommand => allCatch.withApply(errorFail) {
         val productId = c.productId.value.get
         Db.cartItems.deleteWhere(s => s.productId === productId and s.cartId === c.cartId.value.get).
           successNel : ModelValidation[Int]
-      }
     }
-    case c: CheckoutCommand => transaction {
-      allCatch.withApply(errorFail) {
+    case c: CheckoutCommand => allCatch.withApply(errorFail) {
         Db.cartItems.deleteWhere(_.cartId === c.cartId.value.get).
           successNel : ModelValidation[Int]
       }
     }
-  }
   private def add(cartId: String, p: Product, count: Int): ModelValidation[CartItem] = {
     val ci: CartItem = from(relation)(s => where(s.productId === p.id) select(s)).headOption.
       map { loaded =>

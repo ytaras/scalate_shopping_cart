@@ -10,7 +10,7 @@ import collection.mutable
 import infrastructure._
 
 trait ScalatraShoppingCartStack extends ScalatraServlet with ScalateSupport
-  with ParamsOnlyCommandSupport with FlashMapSupport {
+  with ParamsOnlyCommandSupport with FlashMapSupport with DbSessionSupport {
 
   /* wire up the precompiled templates */
   override protected def defaultTemplatePath: List[String] = List("/WEB-INF/templates/views")

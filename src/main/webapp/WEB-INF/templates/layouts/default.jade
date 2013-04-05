@@ -18,8 +18,6 @@ html
               a(href="/products") Available products
             li
               a(href="/shopping-cart") Shopping cart
-            li
-              a(href="/logout") Logout
       h1= title
       - context.asInstanceOf[org.scalatra.scalate.ScalatraRenderContext].flash.get("alert").foreach
         - alert =>

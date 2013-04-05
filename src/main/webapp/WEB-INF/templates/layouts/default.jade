@@ -19,7 +19,7 @@ html
             li
               a(href="/shopping-cart") Shopping cart
       h1= title
-      - context.asInstanceOf[org.scalatra.scalate.ScalatraRenderContext].flash.get("alert").foreach
+      - flash.get("alert").foreach
         - alert =>
         .alert
           .button(type="button" class="close" data-dismiss="alert") &times;

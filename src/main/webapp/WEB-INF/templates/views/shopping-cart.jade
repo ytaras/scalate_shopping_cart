@@ -1,7 +1,7 @@
 - attributes("title") = "Shopping cart"
 -import com.softserve.cart.model._
--@ val cart: Iterable[(Product, CartItem)]
--@ val aCookie: String
+-@ val cartId: String
+-@ val cart: Iterable[CartItem]
 
 table.table
   thead
@@ -12,16 +12,16 @@ table.table
       th Count
       th Sum
   tbody
-    - for((item, cartItem) <- cart)
+    - for(cartItem <- cart)
       tr
         td
           a(href="/cartitems/#{cartItem.productId}" class="btn btn-danger delete-cart-item") Remove from cart
-        td= item.name
-        td= "$" + item.price
+        td= cartItem.product.name
+        td= "$" + cartItem.product.price
         td= cartItem.count
-        td= "$" + cartItem.sum(item)
+        td= "$" + cartItem.sum
 
 form(action="/shopping-cart/checkout" method="POST")
+  input(type="hidden" name="cartId" value="#{cartId}")
   button(type="submit" class="btn btn-primary") Checkout cart
 
-= aCookie

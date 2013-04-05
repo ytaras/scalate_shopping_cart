@@ -12,6 +12,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
     if(cookies.get("shoppingcart_id").isEmpty)
       cookies += ("shoppingcart_id" -> CartRepository.newId)
   }
+  def cartId: String = cookies("shoppingcart_id")
 
   get("/") {
     jade("/index")
@@ -19,7 +20,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
 
   get("/shopping-cart") {
     val cart = cookies.get("shoppingcart_id").map { CartRepository.cart(_) } getOrElse Nil
-    jade("/shopping-cart", "cart" -> cart, "cookie" -> cookies("shoppingcart_id"))
+    jade("/shopping-cart", "cart" -> cart, "cartId" -> cartId)
   }
 
   get("/products") {
@@ -28,7 +29,7 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
 
   get("/products/:id") {
     ProductRepository.lookup(params("id").toLong) match {
-      case Some(product) => jade("/product", "product" -> product)
+      case Some(product) => jade("/product", "product" -> product, "cartId" -> cartId)
       case None => NotFound("Item with id " + params("id") + " not found")
     }
   }

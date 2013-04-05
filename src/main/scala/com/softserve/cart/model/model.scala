@@ -11,9 +11,8 @@ case class Product(id: Long, name: String, description: String, price: Int)
 case class CartItem(productId: Long, cartId: String, count: Int)
   extends KeyedEntity[CompositeKey2[Long, String]] {
   def id = compositeKey(productId, cartId)
+  // Let's fail fast - cartItem without assocciated product is an exception
+  lazy val product = ProductRepository.lookup(productId).get
 
-  // TODO Find out what is correct pattern for using transactions
-  // and lazy load in Squeryl
-  // so I won't have to pass item as a parameter
-  def sum(product: Product) = product.price * count
+  def sum = product.price * count
 }

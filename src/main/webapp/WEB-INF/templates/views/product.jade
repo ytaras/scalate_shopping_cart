@@ -1,5 +1,6 @@
 -import com.softserve.cart.model._
 -@ val product: Product
+-@ val cartId: String
 - attributes("title") = "Product: " + product.name
 
 h3 Description
@@ -12,5 +13,6 @@ form(method="Post" action="/shopping-cart" class="form-inline")
     label Amount
     input(type="text" name="amount" class="input-mini")
     input(type="hidden" name="productId" value="#{product.id}")
+    input(type="hidden" name="cartId" value="#{cartId}")
     button(type="submit" class="btn btn-primary") Add to shoping cart
 

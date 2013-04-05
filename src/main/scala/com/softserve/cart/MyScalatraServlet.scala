@@ -29,6 +29,8 @@ class MyScalatraServlet extends ScalatraShoppingCartStack {
 
   get("/products/:id") {
     ProductRepository.lookup(params("id").toLong) match {
+      // TODO I hate adding cartId as a hidden field, it's designed to be a cookie,
+      // but at the time being command framework doesn't support loading data from cookies
       case Some(product) => jade("/product", "product" -> product, "cartId" -> cartId)
       case None => NotFound("Item with id " + params("id") + " not found")
     }

@@ -31,9 +31,16 @@ trait DbInit {
 }
 
 trait Repository[T, Entity <: KeyedEntity[T]] {
+  import scalaz._
+  import Scalaz._
   def relation: Table[Entity]
   def all = from(relation)(select(_))
   def lookup(key: T) = relation.lookup(key)
+  def upsert(loaded:Option[Entity], zero: Entity, update: Entity => Entity): Entity = {
+    val upserted = loaded some { update(_) } none { zero }
+    loaded ? relation.update(upserted) | relation.insert(upserted)
+    upserted
+  }
 }
 
 object Db extends Schema {

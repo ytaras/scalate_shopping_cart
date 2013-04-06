@@ -69,16 +69,7 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
     case c: CheckoutCommand => applyCheckout(c)
     }
   private def insertOrAdd(cartId: String, p: Product, count: Int): CartItem = {
-    from(relation)(s => where(s.productId === p.id) select(s)).headOption.
-      map { loaded =>
-          val updated = loaded.copy(count = loaded.count + count)
-          Db.cartItems.update(updated)
-          updated
-      } getOrElse {
-          val created = CartItem(p.id, cartId, count)
-          Db.cartItems.insert(created)
-          created
-      }
+    val loaded = lookup((p.id, cartId))
+    upsert(loaded, CartItem(p.id, cartId, count), { l => l.copy(count = l.count + count)})
   }
 }
-

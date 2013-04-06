@@ -17,8 +17,22 @@ object ProductRepository extends Repository[Long, Product]{
   def relation = Db.products
 }
 
+object ScalazGoodies {
+  import scala.language.implicitConversions
+  trait ValidatedField[T]{
+    def field: Field[T]
+
+    def toValidation: ValidationNEL[ValidationError, T] = field.value.toSuccess {
+        ValidationError(field.error.getOrElse("Unknown error at %s" format field.name).toString).wrapNel
+    }
+  }
+  implicit def ValidationTo[T](_field: Field[T]): ValidatedField[T] = new ValidatedField[T] {
+    val field = _field
+  }
+}
 object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] with CommandHandler {
   import org.squeryl.PrimitiveTypeMode._
+  import ScalazGoodies._
   lazy val relation = Db.cartItems
 
   def cart(cartId: String) = from(relation)(s => where(s.cartId === cartId) select(s))
@@ -29,35 +43,32 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
 
   def newId = java.util.UUID.randomUUID.toString
 
-  def toValidation[T](field: Field[T]): ValidationNEL[ValidationError, T] = {
-    field.value.toSuccess {
-      ValidationError(field.error.getOrElse("Unknown error at %s" format field.name).toString).wrapNel
-    }
-  }
-  def applyAdd(c: AddToCartCommand): ModelValidation[CartItem] = {
-      val ciOption: ModelValidation[CartItem] = for {
-        productId <- toValidation(c.itemId)
+  private def applyAdd(c: AddToCartCommand): ModelValidation[CartItem] = {
+      for {
+        productId <- c.itemId.toValidation
+        cartId <- c.cartId.toValidation
+        amount <- c.amount.toValidation
         product <- ProductRepository.lookup(productId).toSuccess(ValidationError("Product not found").wrapNel)
-        cartId <- toValidation(c.cartId)
-        amount <- toValidation(c.amount)
-      } yield add(cartId, product, amount)
-
-      ciOption
+      } yield insertOrAdd(cartId, product, amount)
+  }
+  private def applyRemove(c: RemoveFromCartCommand): ModelValidation[Int] = {
+    for {
+      productId <- c.productId.toValidation
+      cartId <- c.cartId.toValidation
+    } yield Db.cartItems.deleteWhere(s => s.productId === productId and s.cartId === cartId)
+  }
+  private def applyCheckout(c: CheckoutCommand): ModelValidation[Int] = {
+    for {
+      cartId <- c.cartId.toValidation
+    } yield Db.cartItems.deleteWhere(_.cartId === cartId)
   }
 
   protected def handle: Handler = {
     case c: AddToCartCommand => applyAdd(c)
-    case c: RemoveFromCartCommand => allCatch.withApply(errorFail) {
-        val productId = c.productId.value.get
-        Db.cartItems.deleteWhere(s => s.productId === productId and s.cartId === c.cartId.value.get).
-          successNel : ModelValidation[Int]
+    case c: RemoveFromCartCommand => applyRemove(c)
+    case c: CheckoutCommand => applyCheckout(c)
     }
-    case c: CheckoutCommand => allCatch.withApply(errorFail) {
-        Db.cartItems.deleteWhere(_.cartId === c.cartId.value.get).
-          successNel : ModelValidation[Int]
-      }
-    }
-  private def add(cartId: String, p: Product, count: Int): CartItem = {
+  private def insertOrAdd(cartId: String, p: Product, count: Int): CartItem = {
     from(relation)(s => where(s.productId === p.id) select(s)).headOption.
       map { loaded =>
           val updated = loaded.copy(count = loaded.count + count)
@@ -69,6 +80,5 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
           created
       }
   }
-  def errorFail(ex: Throwable) = ValidationError(ex.getMessage, UnknownError).failNel
 }
 

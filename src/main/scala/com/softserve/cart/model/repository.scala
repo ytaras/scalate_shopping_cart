@@ -29,13 +29,24 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
 
   def newId = java.util.UUID.randomUUID.toString
 
-  protected def handle: Handler = {
-    case c: AddToCartCommand => allCatch.withApply(errorFail) {
-        // TODO I beliebe some more functional apporoach exists
-        // to transform from Option to NEL
-        val product = ProductRepository.lookup(c.itemId.value.get).get
-        add(c.cartId.value.get, product, c.amount.value.get)
+  def toValidation[T](field: Field[T]): ValidationNEL[ValidationError, T] = {
+    field.value.toSuccess {
+      ValidationError(field.error.getOrElse("Unknown error at %s" format field.name).toString).wrapNel
     }
+  }
+  def applyAdd(c: AddToCartCommand): ModelValidation[CartItem] = {
+      val ciOption: ModelValidation[CartItem] = for {
+        productId <- toValidation(c.itemId)
+        product <- ProductRepository.lookup(productId).toSuccess(ValidationError("Product not found").wrapNel)
+        cartId <- toValidation(c.cartId)
+        amount <- toValidation(c.amount)
+      } yield add(cartId, product, amount)
+
+      ciOption
+  }
+
+  protected def handle: Handler = {
+    case c: AddToCartCommand => applyAdd(c)
     case c: RemoveFromCartCommand => allCatch.withApply(errorFail) {
         val productId = c.productId.value.get
         Db.cartItems.deleteWhere(s => s.productId === productId and s.cartId === c.cartId.value.get).
@@ -46,8 +57,8 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
           successNel : ModelValidation[Int]
       }
     }
-  private def add(cartId: String, p: Product, count: Int): ModelValidation[CartItem] = {
-    val ci: CartItem = from(relation)(s => where(s.productId === p.id) select(s)).headOption.
+  private def add(cartId: String, p: Product, count: Int): CartItem = {
+    from(relation)(s => where(s.productId === p.id) select(s)).headOption.
       map { loaded =>
           val updated = loaded.copy(count = loaded.count + count)
           Db.cartItems.update(updated)
@@ -57,7 +68,6 @@ object CartRepository extends Repository[CompositeKey2[Long, String], CartItem] 
           Db.cartItems.insert(created)
           created
       }
-      ci.successNel
   }
   def errorFail(ex: Throwable) = ValidationError(ex.getMessage, UnknownError).failNel
 }

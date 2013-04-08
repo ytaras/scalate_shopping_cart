@@ -36,7 +36,7 @@ function drawPlot(graph_id){
         .orient("left")
         .tickFormat(formatPercent);
 
-  var svg = d3.select("div div").append("svg")
+  var svg = d3.select(".plot_wraper").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")

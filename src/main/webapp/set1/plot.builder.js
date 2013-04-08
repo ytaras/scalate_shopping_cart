@@ -5,7 +5,7 @@ jQuery(function(){
   $("#graph3").on('click',function(){ drawPlot(3); })
   
   $(window).resize(function() {
-    drawPlot($('input[name=graph]:checked').val());
+   drawPlot(parseInt($('input[name=graph]:checked').val()));
   });
 });// end for jQuery
 
@@ -115,6 +115,8 @@ function drawPlot(graph_id){
         .attr("y", function(d) { return 0; }) // margin top
         .attr("height", function(d) { return height - y(d.Others); }); // height of bar
     });
+    // add legend before plot
+    $('svg').before("<div class='legend'><span class='color color2'></span><span class='title'>Others</span><span class='color color1'></span><span class='title'>Romney</span><span class='color color3'></span><span class='title'>Obama</span></div>");
   }
 
   function drawPlotByDemographics() {
@@ -167,8 +169,9 @@ function drawPlot(graph_id){
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return 0; }) // margin top
         .attr("height", function(d) { return height - y(d.Others); }); // height of bar*/
-
     });
+    // add legend before plot
+    $('svg').before("<div class='legend'><span class='color color2'></span><span class='title'>Others</span><span class='color color1'></span><span class='title'>Romney</span><span class='color color3'></span><span class='title'>Obama</span></div>");
   }
 
   function drawPlotByGeography() {
@@ -218,7 +221,8 @@ function drawPlot(graph_id){
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.Romney); }) // margin top
         .attr("height", function(d) { return height - y(d.Romney); }); // height of bar
-
     });
+    // add legend before plot
+    $('svg').before("<div class='legend'><span class='color color3'></span><span class='title'>Margin Obama</span><span class='color color1'></span><span class='title'>Margin Romney</span></div>");
   }
 }

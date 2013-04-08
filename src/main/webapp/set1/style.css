@@ -52,22 +52,55 @@ input[type="radio"]:checked + label span {
   shape-rendering: crispEdges;
 }
 
+.legend {
+  font-weight: bold;
+  margin-top: 5px;
+  text-align: center;
+  width: 100%;
+
+}
+
+span.color{
+  display: inline-block;
+  height: 10px;
+  margin-left: 100px;
+  margin-right: 5px;
+  width: 10px;
+}
+
+span.color:first-child {
+  margin-left: 0px;
+}
+
 .color1 {
   fill: #C0504D; /*red*/
+}
+
+span.color1{
+  background-color: #C0504D;
 }
 
 .color2 {
   fill: #9BBB59; /*green*/
 }
 
+span.color2{
+  background-color: #9BBB59;
+}
+
 .color3 {
   fill: #4F81BD; /*blue*/
+}
+
+span.color3{
+  background-color: #4F81BD;
 }
 
 .x.axis path {
   display: none;
 }
 
+/* css for resize plots and other content on small screen devices*/
 @media only screen and (max-width : 768px) 
 {
   body{ 
@@ -92,11 +125,3 @@ input[type="radio"]:checked + label span {
     height: 350px;
   }
 }
-
-/* iPads (portrait) ----------- 
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
-/*and (orientation : portrait) {
-  .plot_wraper {width: 760px; height: 450px;}
-}*/
